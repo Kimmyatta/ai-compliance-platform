@@ -1,0 +1,3 @@
+The California Consumer Privacy Act (CCPA) is a California privacy law that gives residents control over their personal data. 
+It grants consumers the right to know what personal information businesses collect, the right to delete personal data, 
+and the right to opt out of the sale or sharing of their personal information.

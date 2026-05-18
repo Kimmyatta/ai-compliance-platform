@@ -1,0 +1,11 @@
+faiss-cpu
+fpdf2
+groq
+nltk
+numpy
+pdfplumber
+python-dotenv
+sentence-transformers
+streamlit
+torch
+transformers
