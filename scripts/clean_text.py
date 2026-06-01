@@ -1,27 +1,15 @@
-from pathlib import Path
-import re
+"""Legacy entry point.
 
-# Paths
-EXTRACTED_DIR = Path("data/extracted")
-CLEANED_DIR = Path("data/cleaned")
+Use scripts/build_knowledge_base.py so privacy and FDA guidance data stay separate.
+"""
 
-CLEANED_DIR.mkdir(parents=True, exist_ok=True)
 
-# Function to clean text
-def clean_text(text):
-    # Remove extra whitespace and line breaks
-    text = re.sub(r'\s+', ' ', text)
-    # Strip leading/trailing spaces
-    text = text.strip()
-    return text
+def main():
+    print("Use one of these commands instead:")
+    print("  python scripts/build_knowledge_base.py privacy")
+    print("  python scripts/build_knowledge_base.py fda_guidance")
+    print("  python scripts/process_device_submissions.py")
 
-# Process each extracted text file
-for txt_file in EXTRACTED_DIR.glob("*.txt"):
-    print(f"Cleaning: {txt_file.name}")
-    text = txt_file.read_text(encoding="utf-8")
-    cleaned = clean_text(text)
 
-    output_file = CLEANED_DIR / txt_file.name
-    output_file.write_text(cleaned, encoding="utf-8")
-
-print("✅ Cleaning complete.")
+if __name__ == "__main__":
+    main()

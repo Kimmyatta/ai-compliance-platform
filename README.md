@@ -25,15 +25,15 @@ Key capabilities include:
 - PDF export for compliance reports.
 - Local logging of review activity.
 
-The current data pipeline is organized under `data/`:
+The Version 1.0 privacy review knowledge base is organized under `data/privacy/`:
 
 ```text
-data/raw/          Source regulatory PDFs
-data/extracted/    Extracted text from PDFs
-data/cleaned/      Cleaned text files
-data/chunked/      Chunked text used for retrieval
-data/embeddings/   Generated embedding JSON
-data/faiss_index/  FAISS index and metadata
+data/privacy/raw/          HIPAA, CCPA, and HITECH source PDFs
+data/privacy/extracted/    Extracted text from privacy PDFs
+data/privacy/cleaned/      Cleaned privacy text files
+data/privacy/chunked/      Chunked privacy text used for retrieval
+data/privacy/embeddings/   Generated privacy embedding JSON
+data/privacy/faiss_index/  Privacy FAISS index and metadata
 ```
 
 ## Next Phase
@@ -52,6 +52,23 @@ Planned capabilities include:
 - Producing structured audit summaries for each device.
 - Supporting cross-device comparison by clinical area or regulatory topic.
 - Maintaining traceable evidence links back to source document sections.
+
+The FDA AI device audit data is separated into guidance documents and device submissions:
+
+```text
+data/fda_ai/guidance/raw/          FDA guidance source PDFs
+data/fda_ai/guidance/extracted/    Extracted guidance text
+data/fda_ai/guidance/cleaned/      Cleaned guidance text
+data/fda_ai/guidance/chunked/      Chunked guidance text used for retrieval
+data/fda_ai/guidance/embeddings/   Generated guidance embedding JSON
+data/fda_ai/guidance/faiss_index/  FDA guidance FAISS index and metadata
+
+data/fda_ai/devices/raw/           FDA-cleared device submission PDFs
+data/fda_ai/devices/extracted/     Extracted device submission text
+data/fda_ai/devices/cleaned/       Cleaned device submission text
+data/fda_ai/devices/parsed/        Structured manufacturer disclosures
+data/fda_ai/devices/audited/       Final audit outputs and gap reports
+```
 
 ## Setup
 
@@ -73,23 +90,33 @@ streamlit run app.py
 
 ## Add New PDFs
 
-Place new source PDFs in:
+Place privacy source PDFs in:
 
 ```text
-data/raw/
+data/privacy/raw/
 ```
 
-Then rebuild the retrieval data:
+Place FDA AI guidance PDFs in:
+
+```text
+data/fda_ai/guidance/raw/
+```
+
+Place FDA-cleared device submission PDFs in:
+
+```text
+data/fda_ai/devices/raw/
+```
+
+Then rebuild the relevant data:
 
 ```powershell
-python scripts/extract_text.py
-python scripts/clean_text.py
-python scripts/chunk_text.py
-python scripts/create_embeddings.py
-python scripts/store_faiss.py
+python scripts/build_knowledge_base.py privacy
+python scripts/build_knowledge_base.py fda_guidance
+python scripts/process_device_submissions.py
 ```
 
-Restart the Streamlit app after rebuilding the FAISS index.
+Restart the Streamlit app after rebuilding a FAISS index.
 
 ## Repository Notes
 

@@ -7,9 +7,9 @@ import os
 from prompt import build_document_review_prompt
 
 embedder = SentenceTransformer("BAAI/bge-small-en-v1.5")
-index = faiss.read_index("data/faiss_index/index.faiss")
+index = faiss.read_index("data/privacy/faiss_index/index.faiss")
 
-with open("data/faiss_index/metadata.json", "r") as f:
+with open("data/privacy/faiss_index/metadata.json", "r") as f:
     metadata = json.load(f)
 
 REGULATIONS = ["CCPA", "HIPAA", "HITECH"]

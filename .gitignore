@@ -7,3 +7,4 @@ logs.json
 *.log
 .streamlit/secrets.toml
 .tmp/
+data/fda_ai/devices/audited/*.json
