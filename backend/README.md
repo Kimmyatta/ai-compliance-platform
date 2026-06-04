@@ -61,6 +61,10 @@ GET  /api/health
 GET  /api/fda-audit/devices
 POST /api/fda-audit/upload
 POST /api/fda-audit/devices/{filename}
+POST /api/fda-audit/jobs/upload
+POST /api/fda-audit/jobs/devices/{filename}
+GET  /api/fda-audit/jobs
+GET  /api/fda-audit/jobs/{job_id}
 POST /api/privacy-review/upload
 ```
 
@@ -85,10 +89,61 @@ POST /api/fda-audit/upload
 Runs an FDA audit against a newly uploaded PDF, DOCX, or TXT file.
 
 ```text
+POST /api/fda-audit/jobs/upload
+```
+
+Creates a background FDA audit job for a newly uploaded file and immediately returns a `job_id`.
+
+```text
+POST /api/fda-audit/jobs/devices/{filename}
+```
+
+Creates a background FDA audit job for one existing cleaned device file.
+
+```text
+GET /api/fda-audit/jobs/{job_id}
+```
+
+Returns the current job state. Possible statuses are:
+
+```text
+queued
+running
+completed
+failed
+```
+
+When a job is completed, the response includes the full FDA audit result.
+
+```text
 POST /api/privacy-review/upload
 ```
 
 Runs a privacy policy or privacy notice review against HIPAA, CCPA, and HITECH.
+
+## Background Job Flow
+
+FDA audits can take a while because each audit runs multiple LLM calls. The job endpoints are designed for React:
+
+```text
+1. React uploads or selects a device.
+2. FastAPI creates a job and returns job_id.
+3. FastAPI runs the audit in the background.
+4. React polls GET /api/fda-audit/jobs/{job_id}.
+5. React renders the completed audit result.
+```
+
+Example job creation response:
+
+```json
+{
+  "job_id": "d8e6f7a0-example",
+  "status": "queued",
+  "filename": "device_submission.pdf"
+}
+```
+
+The current implementation uses an in-memory job store. That is fine for local development, but it resets when the server restarts. For AWS production, replace it with Redis, DynamoDB, RDS, SQS, or another persistent job system.
 
 ## React + TypeScript Integration
 
@@ -113,3 +168,5 @@ Expected backend role:
 ```text
 Receive upload -> extract text -> run review/audit -> return structured JSON
 ```
+
+For long FDA audits, React should use the job endpoints instead of waiting for one long direct request.

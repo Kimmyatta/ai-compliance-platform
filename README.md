@@ -117,6 +117,10 @@ GET  /api/health
 GET  /api/fda-audit/devices
 POST /api/fda-audit/upload
 POST /api/fda-audit/devices/{filename}
+POST /api/fda-audit/jobs/upload
+POST /api/fda-audit/jobs/devices/{filename}
+GET  /api/fda-audit/jobs
+GET  /api/fda-audit/jobs/{job_id}
 POST /api/privacy-review/upload
 ```
 
@@ -133,6 +137,28 @@ POST /api/fda-audit/upload
 ```
 
 Audits a newly uploaded PDF, DOCX, or TXT file.
+
+For React, the preferred FDA audit workflow is the job-based API:
+
+```text
+POST /api/fda-audit/jobs/upload
+POST /api/fda-audit/jobs/devices/{filename}
+GET  /api/fda-audit/jobs/{job_id}
+```
+
+The POST endpoint starts an audit and returns immediately:
+
+```json
+{
+  "job_id": "example-job-id",
+  "status": "queued",
+  "filename": "uploaded_device.pdf"
+}
+```
+
+The frontend can then poll the job status endpoint until the job returns `completed` or `failed`.
+
+The current job store is in memory. This is suitable for local development and React integration, but AWS production should replace it with a persistent store such as Redis, DynamoDB, RDS, or S3-backed job records.
 
 Run the backend from the project root:
 
@@ -189,6 +215,7 @@ Expected backend responsibilities:
 - Run Groq-powered review or audit calls.
 - Return structured JSON that React can render.
 - Later support background jobs for long-running FDA audits.
+- Poll FDA audit job status instead of waiting on one long request.
 
 ## Setup
 

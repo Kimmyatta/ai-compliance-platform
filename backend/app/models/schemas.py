@@ -43,6 +43,26 @@ class FdaAuditResponse(BaseModel):
     saved_result_path: str | None = None
 
 
+class FdaAuditJobCreateResponse(BaseModel):
+    job_id: str
+    status: str
+    filename: str
+
+
+class FdaAuditJobStatusResponse(BaseModel):
+    job_id: str
+    status: str
+    filename: str
+    created_at: str
+    updated_at: str
+    result: FdaAuditResponse | None = None
+    error: str | None = None
+
+
+class FdaAuditJobListResponse(BaseModel):
+    jobs: list[FdaAuditJobStatusResponse]
+
+
 class PrivacyReviewResult(BaseModel):
     regulation: str
     parsed: dict[str, str]
