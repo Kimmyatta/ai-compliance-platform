@@ -1,11 +1,31 @@
 # AI Compliance Platform
 
-AI Compliance Platform is a Streamlit-based compliance review assistant for regulatory documents. Version 1.0 focuses on HIPAA, CCPA, and HITECH review using local regulatory PDFs, document extraction, embeddings, and FAISS search.
+AI Compliance Platform is a regulatory review and audit platform for privacy documents and FDA-cleared AI/ML medical device submissions. Version 1.0 began as a Streamlit-based compliance review assistant for HIPAA, CCPA, and HITECH. The current phase adds an FDA AI device audit workflow and starts the transition toward a production-style architecture using FastAPI and a future React + TypeScript frontend.
 
 The platform supports two core workflows:
 
 - Ask compliance questions and retrieve relevant regulatory context.
 - Upload documents and generate structured compliance review feedback.
+- Audit FDA-cleared AI/ML device submissions against FDA AI/ML guidance.
+
+## Platform Architecture
+
+The project is moving from a Streamlit-only prototype toward a frontend/backend platform:
+
+```text
+React + TypeScript frontend
+        |
+        v
+FastAPI backend
+        |
+        v
+Python review and audit services
+        |
+        v
+FAISS indexes, source PDFs, extracted text, and LLM calls
+```
+
+Streamlit is still useful for local prototyping and testing. FastAPI is the backend layer that React will call. The React frontend should not import Python files directly; it should send requests to FastAPI endpoints and render the JSON responses.
 
 ## Version 1.0
 
@@ -70,6 +90,106 @@ data/fda_ai/devices/parsed/        Structured manufacturer disclosures
 data/fda_ai/devices/audited/       Final audit outputs and gap reports
 ```
 
+## FastAPI Backend
+
+The backend lives under `backend/` and exposes the current Python workflows as API endpoints.
+
+```text
+backend/
+├── app/
+│   ├── main.py
+│   ├── api/routes.py
+│   ├── services/
+│   │   ├── fda_audit_service.py
+│   │   ├── privacy_review_service.py
+│   │   ├── pdf_service.py
+│   │   └── retrieval_service.py
+│   ├── models/schemas.py
+│   └── core/config.py
+├── requirements.txt
+└── README.md
+```
+
+Initial API endpoints:
+
+```text
+GET  /api/health
+GET  /api/fda-audit/devices
+POST /api/fda-audit/upload
+POST /api/fda-audit/devices/{filename}
+POST /api/privacy-review/upload
+```
+
+The two FDA audit POST endpoints both generate FDA audit reviews, but they support different workflows:
+
+```text
+POST /api/fda-audit/devices/{filename}
+```
+
+Audits an existing cleaned device file from `data/fda_ai/devices/cleaned/`.
+
+```text
+POST /api/fda-audit/upload
+```
+
+Audits a newly uploaded PDF, DOCX, or TXT file.
+
+Run the backend from the project root:
+
+```powershell
+.\venv\Scripts\uvicorn.exe backend.app.main:app --reload --host 127.0.0.1 --port 8000
+```
+
+Then open:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+The `/docs` page is generated automatically by FastAPI and can be used to test each endpoint.
+
+## React + TypeScript Frontend Plan
+
+The planned frontend will use React + TypeScript. React will become the user-facing application, while FastAPI remains responsible for the Python-heavy work: PDF extraction, FAISS retrieval, FDA audit logic, privacy review logic, LLM calls, parsing, and report generation.
+
+Planned frontend structure:
+
+```text
+frontend/
+├── src/
+│   ├── api/
+│   │   └── client.ts
+│   ├── components/
+│   ├── pages/
+│   │   ├── PrivacyReview.tsx
+│   │   ├── FdaAudit.tsx
+│   │   └── AuditHistory.tsx
+│   ├── types/
+│   │   └── audit.ts
+│   ├── App.tsx
+│   └── main.tsx
+├── package.json
+├── vite.config.ts
+└── tsconfig.json
+```
+
+Expected frontend responsibilities:
+
+- Provide document upload screens for privacy review and FDA audit.
+- Display audit progress, errors, and completed results.
+- Render FDA audit dimensions, risk levels, evidence sources, and guidance gaps.
+- Render privacy review findings across HIPAA, CCPA, and HITECH.
+- Call FastAPI through typed API helper functions.
+
+Expected backend responsibilities:
+
+- Receive uploaded files.
+- Extract document text.
+- Query the correct FAISS knowledge base.
+- Run Groq-powered review or audit calls.
+- Return structured JSON that React can render.
+- Later support background jobs for long-running FDA audits.
+
 ## Setup
 
 Create and activate a virtual environment, then install dependencies:
@@ -84,8 +204,16 @@ Create a `.env` file for any required API keys or local configuration.
 
 ## Run The App
 
+Run the Streamlit prototype:
+
 ```powershell
 streamlit run app.py
+```
+
+Run the FastAPI backend:
+
+```powershell
+.\venv\Scripts\uvicorn.exe backend.app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
 ## Add New PDFs

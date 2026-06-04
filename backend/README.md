@@ -2,19 +2,46 @@
 
 FastAPI backend for the AI Compliance Platform.
 
+The backend exists so a future React + TypeScript frontend can call stable HTTP endpoints instead of importing Python files directly. Python remains responsible for document extraction, FAISS retrieval, audit logic, privacy review logic, and LLM calls.
+
+## Architecture
+
+```text
+React + TypeScript frontend
+        |
+        v
+FastAPI backend
+        |
+        v
+Python services
+        |
+        v
+FAISS indexes, source PDFs, extracted text, and Groq
+```
+
+The backend wraps the existing review modules:
+
+```text
+document_review.py       Privacy review workflow
+document_review_fda.py   FDA AI device audit workflow
+document_reader.py       Original Streamlit document reader
+```
+
+The backend also has its own upload extraction service in `app/services/pdf_service.py` so API uploads can be handled cleanly.
+
 ## Run Locally
 
 From the project root:
 
-```bash
-pip install -r backend/requirements.txt
-uvicorn backend.app.main:app --reload --port 8000
+```powershell
+.\venv\Scripts\python.exe -m pip install -r backend\requirements.txt
+.\venv\Scripts\uvicorn.exe backend.app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
 Then open:
 
 ```text
-http://localhost:8000/docs
+http://127.0.0.1:8000/docs
 ```
 
 ## Environment
@@ -37,4 +64,52 @@ POST /api/fda-audit/devices/{filename}
 POST /api/privacy-review/upload
 ```
 
-The React frontend should call these endpoints instead of importing Python audit files directly.
+## Endpoint Meaning
+
+```text
+GET /api/fda-audit/devices
+```
+
+Lists cleaned FDA device files already available under `data/fda_ai/devices/cleaned/`.
+
+```text
+POST /api/fda-audit/devices/{filename}
+```
+
+Runs an FDA audit against one existing cleaned device file.
+
+```text
+POST /api/fda-audit/upload
+```
+
+Runs an FDA audit against a newly uploaded PDF, DOCX, or TXT file.
+
+```text
+POST /api/privacy-review/upload
+```
+
+Runs a privacy policy or privacy notice review against HIPAA, CCPA, and HITECH.
+
+## React + TypeScript Integration
+
+The future React frontend should call the backend through typed API helper functions, for example:
+
+```text
+frontend/src/api/client.ts
+```
+
+React should send uploads to FastAPI and render the returned JSON. It should not perform PDF extraction, FAISS retrieval, or LLM calls in the browser.
+
+Expected frontend pages:
+
+```text
+PrivacyReview.tsx
+FdaAudit.tsx
+AuditHistory.tsx
+```
+
+Expected backend role:
+
+```text
+Receive upload -> extract text -> run review/audit -> return structured JSON
+```
