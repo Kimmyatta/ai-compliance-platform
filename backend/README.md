@@ -51,7 +51,7 @@ The backend reads `GROQ_API_KEY` from `.env` in the project root or from the ser
 Optional CORS setting:
 
 ```text
-CORS_ORIGINS=http://localhost:5173,http://localhost:3000
+CORS_ORIGINS=http://127.0.0.1:5173,http://localhost:5173,http://127.0.0.1:3000,http://localhost:3000
 ```
 
 ## Initial Endpoints

@@ -518,14 +518,26 @@ def summarize_audit_run(audits):
     }
 
 
-def audit_device_submission(device_text, client, k=5):
+def audit_device_submission(device_text, client, k=5, progress_callback=None):
     audits = {}
     device_chunks, device_index = build_device_evidence_index(device_text)
     blocking_error = None
     last_groq_request_at = None
     pccp_disclosed = has_disclosed_pccp(device_text)
+    total_dimensions = len(FDA_AUDIT_DIMENSIONS)
 
-    for dimension, config in FDA_AUDIT_DIMENSIONS.items():
+    for dimension_index, (dimension, config) in enumerate(FDA_AUDIT_DIMENSIONS.items(), start=1):
+        if progress_callback:
+            progress_callback(
+                {
+                    "current_dimension": dimension,
+                    "current_dimension_index": dimension_index,
+                    "total_dimensions": total_dimensions,
+                    "completed_dimensions": max(0, dimension_index - 1),
+                    "message": f"Auditing {dimension}",
+                }
+            )
+
         if dimension.startswith(PCCP_DIMENSION_PREFIX) and not pccp_disclosed:
             audits[dimension] = {
                 "status": "completed",
@@ -540,6 +552,16 @@ def audit_device_submission(device_text, client, k=5):
                 "principles": config["principles"],
                 "device_evidence": [],
             }
+            if progress_callback:
+                progress_callback(
+                    {
+                        "current_dimension": dimension,
+                        "current_dimension_index": dimension_index,
+                        "total_dimensions": total_dimensions,
+                        "completed_dimensions": dimension_index,
+                        "message": f"Completed {dimension}",
+                    }
+                )
             continue
 
         if blocking_error:
@@ -552,6 +574,16 @@ def audit_device_submission(device_text, client, k=5):
                 "principles": config["principles"],
                 "device_evidence": [],
             }
+            if progress_callback:
+                progress_callback(
+                    {
+                        "current_dimension": dimension,
+                        "current_dimension_index": dimension_index,
+                        "total_dimensions": total_dimensions,
+                        "completed_dimensions": dimension_index,
+                        "message": f"Skipped {dimension}",
+                    }
+                )
             continue
 
         try:
@@ -607,15 +639,31 @@ def audit_device_submission(device_text, client, k=5):
             "device_evidence": device_evidence_sources,
         }
 
+        if progress_callback:
+            progress_callback(
+                {
+                    "current_dimension": dimension,
+                    "current_dimension_index": dimension_index,
+                    "total_dimensions": total_dimensions,
+                    "completed_dimensions": dimension_index,
+                    "message": f"Completed {dimension}",
+                }
+            )
+
     return {
         "audits": audits,
         "summary": summarize_audit_run(audits),
     }
 
 
-def audit_device_file(filename, client, k=5):
+def audit_device_file(filename, client, k=5, progress_callback=None):
     device_text = load_device_submission(filename)
-    return audit_device_submission(device_text, client, k=k)
+    return audit_device_submission(
+        device_text,
+        client,
+        k=k,
+        progress_callback=progress_callback,
+    )
 
 
 def parse_audit_result(result_text):

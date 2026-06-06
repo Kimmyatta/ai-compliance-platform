@@ -7,4 +7,9 @@ logs.json
 *.log
 .streamlit/secrets.toml
 .tmp/
+.tools/
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.vite/
 data/fda_ai/devices/audited/*.json

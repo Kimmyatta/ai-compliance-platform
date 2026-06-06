@@ -1,6 +1,6 @@
 # AI Compliance Platform
 
-AI Compliance Platform is a regulatory review and audit platform for privacy documents and FDA-cleared AI/ML medical device submissions. Version 1.0 began as a Streamlit-based compliance review assistant for HIPAA, CCPA, and HITECH. The current phase adds an FDA AI device audit workflow and starts the transition toward a production-style architecture using FastAPI and a future React + TypeScript frontend.
+AI Compliance Platform is a regulatory review and audit platform for privacy documents and FDA-cleared AI/ML medical device submissions. Version 1.0 began as a Streamlit-based compliance review assistant for HIPAA, CCPA, and HITECH. The current phase adds an FDA AI device audit workflow and transitions the platform toward a production-style architecture using FastAPI and a React + TypeScript frontend.
 
 The platform supports two core workflows:
 
@@ -26,6 +26,50 @@ FAISS indexes, source PDFs, extracted text, and LLM calls
 ```
 
 Streamlit is still useful for local prototyping and testing. FastAPI is the backend layer that React will call. The React frontend should not import Python files directly; it should send requests to FastAPI endpoints and render the JSON responses.
+
+## Frontend, Backend, And RAG Summary
+
+The platform is organized as a frontend/backend RAG system.
+
+```text
+React + TypeScript
+        |
+        v
+FastAPI
+        |
+        v
+Python audit and review logic
+        |
+        v
+FAISS retrieval + source documents + Groq
+```
+
+React + TypeScript is the user interface. It handles uploads, dropdowns, buttons, progress bars, status updates, result display, downloads, and page navigation.
+
+FastAPI is the backend server. It receives requests from React, extracts document text, runs privacy reviews and FDA audits, tracks background jobs, calls FAISS retrieval, calls Groq, and returns structured JSON.
+
+This is a RAG system because it retrieves relevant regulatory or FDA guidance context before asking the LLM to generate a review. The privacy workflow retrieves HIPAA, CCPA, and HITECH chunks from the privacy FAISS index. The FDA workflow retrieves FDA AI/ML guidance chunks and focused evidence from device submissions. The retrieved context is then used by Groq to generate structured compliance and audit results.
+
+In short:
+
+```text
+User document or FDA device submission
+        |
+        v
+Text extraction
+        |
+        v
+FAISS retrieval
+        |
+        v
+Prompt with retrieved context
+        |
+        v
+Groq-generated review or audit
+        |
+        v
+React result display and downloads
+```
 
 ## Version 1.0
 
@@ -174,11 +218,11 @@ http://127.0.0.1:8000/docs
 
 The `/docs` page is generated automatically by FastAPI and can be used to test each endpoint.
 
-## React + TypeScript Frontend Plan
+## React + TypeScript Frontend
 
-The planned frontend will use React + TypeScript. React will become the user-facing application, while FastAPI remains responsible for the Python-heavy work: PDF extraction, FAISS retrieval, FDA audit logic, privacy review logic, LLM calls, parsing, and report generation.
+The `frontend/` app uses React + TypeScript. React is the user-facing application, while FastAPI remains responsible for the Python-heavy work: PDF extraction, FAISS retrieval, FDA audit logic, privacy review logic, LLM calls, parsing, and report generation.
 
-Planned frontend structure:
+Current frontend structure:
 
 ```text
 frontend/
@@ -199,7 +243,7 @@ frontend/
 └── tsconfig.json
 ```
 
-Expected frontend responsibilities:
+Frontend responsibilities:
 
 - Provide document upload screens for privacy review and FDA audit.
 - Display audit progress, errors, and completed results.
@@ -207,7 +251,7 @@ Expected frontend responsibilities:
 - Render privacy review findings across HIPAA, CCPA, and HITECH.
 - Call FastAPI through typed API helper functions.
 
-Expected backend responsibilities:
+Backend responsibilities:
 
 - Receive uploaded files.
 - Extract document text.
@@ -241,6 +285,20 @@ Run the FastAPI backend:
 
 ```powershell
 .\venv\Scripts\uvicorn.exe backend.app.main:app --reload --host 127.0.0.1 --port 8000
+```
+
+Run the React + TypeScript frontend after installing Node.js:
+
+```powershell
+cd frontend
+npm install
+npm run dev
+```
+
+Then open:
+
+```text
+http://127.0.0.1:5173
 ```
 
 ## Add New PDFs

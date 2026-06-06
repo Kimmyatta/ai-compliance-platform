@@ -55,6 +55,12 @@ class FdaAuditJobStatusResponse(BaseModel):
     filename: str
     created_at: str
     updated_at: str
+    current_dimension: str | None = None
+    current_dimension_index: int = 0
+    total_dimensions: int = 0
+    completed_dimensions: int = 0
+    progress_percent: int = 0
+    message: str | None = None
     result: FdaAuditResponse | None = None
     error: str | None = None
 

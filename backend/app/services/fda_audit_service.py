@@ -46,17 +46,27 @@ def list_devices():
     return list_device_submissions()
 
 
-def audit_uploaded_device(filename, device_text, k=5, save_result=False):
+def audit_uploaded_device(filename, device_text, k=5, save_result=False, progress_callback=None):
     from document_review_fda import audit_device_submission, save_audit_result
 
-    raw_result = audit_device_submission(device_text, _get_client(), k=k)
+    raw_result = audit_device_submission(
+        device_text,
+        _get_client(),
+        k=k,
+        progress_callback=progress_callback,
+    )
     saved_result_path = save_audit_result(filename, raw_result) if save_result else None
     return _build_response(filename, raw_result, saved_result_path=saved_result_path)
 
 
-def audit_cleaned_device(filename, k=5, save_result=True):
+def audit_cleaned_device(filename, k=5, save_result=True, progress_callback=None):
     from document_review_fda import audit_device_file, save_audit_result
 
-    raw_result = audit_device_file(filename, _get_client(), k=k)
+    raw_result = audit_device_file(
+        filename,
+        _get_client(),
+        k=k,
+        progress_callback=progress_callback,
+    )
     saved_result_path = save_audit_result(filename, raw_result) if save_result else None
     return _build_response(filename, raw_result, saved_result_path=saved_result_path)

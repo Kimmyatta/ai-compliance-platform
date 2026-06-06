@@ -32,7 +32,12 @@ def get_settings():
         groq_api_key=os.getenv("GROQ_API_KEY", "").strip().strip("()\"'").strip(),
         cors_origins=_parse_csv_env(
             os.getenv("CORS_ORIGINS"),
-            ["http://localhost:5173", "http://localhost:3000"],
+            [
+                "http://127.0.0.1:5173",
+                "http://localhost:5173",
+                "http://127.0.0.1:3000",
+                "http://localhost:3000",
+            ],
         ),
         privacy_index_dir=PROJECT_ROOT / "data" / "privacy" / "faiss_index",
         fda_guidance_index_dir=PROJECT_ROOT
