@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import { Database, FileUp, Play, RefreshCw } from "lucide-react";
+import { Database, FileUp, GitBranch, Play, RefreshCw } from "lucide-react";
 import {
   createFdaDeviceJob,
   createFdaUploadJob,
   getFdaDevices,
   getFdaJob,
+  runFdaWorkflowDevice,
 } from "../api/client";
 import { RiskBadge } from "../components/RiskBadge";
 import { SectionPanel } from "../components/SectionPanel";
@@ -13,6 +14,8 @@ import type {
   FdaAuditDimension,
   FdaAuditJobStatusResponse,
   FdaAuditResponse,
+  WorkflowAuditDimension,
+  WorkflowRunResponse,
 } from "../types/audit";
 import { downloadJson, downloadText } from "../utils/download";
 
@@ -75,6 +78,56 @@ function buildFdaTextReport(result: FdaAuditResponse) {
   return lines.join("\n");
 }
 
+function extractRiskFromAuditText(auditText: string) {
+  const match = auditText.match(/Risk Level:\s*\n?([A-Z ]+)/i);
+  return match?.[1]?.trim() || "UNKNOWN";
+}
+
+function buildWorkflowTextReport(result: WorkflowRunResponse) {
+  const report = result.report;
+  const lines = [
+    "AI Compliance Platform - LangGraph FDA AI Workflow Report",
+    `Workflow ID: ${result.workflow_id}`,
+    `Workflow Status: ${result.status}`,
+    `Filename: ${result.filename}`,
+    `Overall Risk: ${result.risk_summary.overall_risk}`,
+    `Escalation Required: ${result.escalation_required ? "Yes" : "No"}`,
+    "",
+    "Escalation Reasons:",
+    result.escalation_reasons.length ? result.escalation_reasons.join("\n") : "N/A",
+    "",
+    "Risk Counts:",
+    ...Object.entries(result.risk_summary.risk_counts).map(
+      ([risk, count]) => `${risk}: ${count}`,
+    ),
+    `NOT DISCLOSED Findings: ${result.risk_summary.not_disclosed_count}`,
+    "",
+    "Run Summary:",
+    `Total Dimensions: ${report.audit_result.summary.total_dimensions}`,
+    `Completed Dimensions: ${report.audit_result.summary.completed_dimensions}`,
+    `Failed Dimensions: ${report.audit_result.summary.failed_dimensions}`,
+    `Skipped Dimensions: ${report.audit_result.summary.skipped_dimensions}`,
+    "",
+  ];
+
+  for (const [dimension, audit] of Object.entries(report.audit_result.audits)) {
+    lines.push(`Dimension: ${dimension}`);
+    lines.push(`Guidance: ${audit.guidance}`);
+    lines.push(`Risk Level: ${extractRiskFromAuditText(audit.audit)}`);
+    lines.push(`Status: ${audit.status}`);
+    lines.push("");
+    lines.push(audit.audit || "N/A");
+    lines.push("");
+    lines.push("Guidance Sources:");
+    lines.push(audit.sources.length ? audit.sources.join("\n") : "N/A");
+    lines.push("");
+    lines.push("-----");
+    lines.push("");
+  }
+
+  return lines.join("\n");
+}
+
 function AuditDimension({ audit }: { audit: FdaAuditDimension }) {
   return (
     <details className="audit-detail">
@@ -116,14 +169,60 @@ function AuditDimension({ audit }: { audit: FdaAuditDimension }) {
   );
 }
 
+function WorkflowDimension({
+  audit,
+  dimension,
+}: {
+  audit: WorkflowAuditDimension;
+  dimension: string;
+}) {
+  const risk = extractRiskFromAuditText(audit.audit);
+
+  return (
+    <details className="audit-detail">
+      <summary>
+        <span>{dimension}</span>
+        <RiskBadge risk={risk} />
+      </summary>
+      <div className="audit-detail__content">
+        <div className="audit-grid">
+          <div>
+            <h3>Guidance</h3>
+            <p>{audit.guidance}</p>
+          </div>
+          <div>
+            <h3>Workflow Status</h3>
+            <p>{audit.status}</p>
+          </div>
+        </div>
+        <h3>Audit Output</h3>
+        <pre>{audit.audit || "N/A"}</pre>
+        {audit.sources.length ? (
+          <>
+            <h3>Guidance Sources</h3>
+            <ul className="source-list">
+              {audit.sources.map((source) => (
+                <li key={source}>{source}</li>
+              ))}
+            </ul>
+          </>
+        ) : null}
+      </div>
+    </details>
+  );
+}
+
 export function FdaAudit() {
   const [devices, setDevices] = useState<string[]>([]);
   const [selectedDevice, setSelectedDevice] = useState("");
   const [uploadFile, setUploadFile] = useState<File | null>(null);
   const [job, setJob] = useState<FdaAuditJobStatusResponse | null>(null);
+  const [workflowResult, setWorkflowResult] = useState<WorkflowRunResponse | null>(null);
   const [loadingDevices, setLoadingDevices] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [workflowSubmitting, setWorkflowSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [workflowError, setWorkflowError] = useState("");
 
   const activeJob = useMemo(
     () => job && ACTIVE_STATUSES.has(job.status),
@@ -168,6 +267,26 @@ export function FdaAudit() {
       setError(requestError instanceof Error ? requestError.message : "Could not start FDA audit.");
     } finally {
       setSubmitting(false);
+    }
+  }
+
+  async function startExistingDeviceWorkflow() {
+    if (!selectedDevice) {
+      setWorkflowError("Select a cleaned FDA device file first.");
+      return;
+    }
+
+    setWorkflowSubmitting(true);
+    setWorkflowError("");
+    try {
+      const response = await runFdaWorkflowDevice(selectedDevice);
+      setWorkflowResult(response);
+    } catch (requestError) {
+      setWorkflowError(
+        requestError instanceof Error ? requestError.message : "Could not run LangGraph workflow.",
+      );
+    } finally {
+      setWorkflowSubmitting(false);
     }
   }
 
@@ -237,6 +356,14 @@ export function FdaAudit() {
               <Database size={16} />
               Start Device Audit
             </button>
+            <button
+              className="button-secondary"
+              onClick={startExistingDeviceWorkflow}
+              disabled={workflowSubmitting || !selectedDevice}
+            >
+              <GitBranch size={16} />
+              {workflowSubmitting ? "Running Workflow" : "Run LangGraph Workflow"}
+            </button>
           </div>
 
           <div className="control-block">
@@ -255,7 +382,84 @@ export function FdaAudit() {
           </div>
         </div>
         {error ? <div className="error-banner">{error}</div> : null}
+        {workflowError ? <div className="error-banner">{workflowError}</div> : null}
       </SectionPanel>
+
+      {workflowResult ? (
+        <SectionPanel
+          title="LangGraph Workflow Result"
+          description={workflowResult.filename}
+          actions={
+            <div className="button-group">
+              <button
+                className="icon-button"
+                onClick={() =>
+                  downloadJson(`langgraph_fda_audit_${workflowResult.filename}`, workflowResult)
+                }
+              >
+                Download JSON
+              </button>
+              <button
+                className="icon-button"
+                onClick={() =>
+                  downloadText(
+                    `langgraph_fda_audit_${workflowResult.filename}`,
+                    buildWorkflowTextReport(workflowResult),
+                  )
+                }
+              >
+                Download TXT
+              </button>
+            </div>
+          }
+        >
+          <div className="job-strip">
+            <div>
+              <span>Workflow ID</span>
+              <strong>{workflowResult.workflow_id}</strong>
+            </div>
+            <div>
+              <span>Status</span>
+              <strong>{workflowResult.status}</strong>
+            </div>
+            <div>
+              <span>Overall Risk</span>
+              <RiskBadge risk={workflowResult.risk_summary.overall_risk} />
+            </div>
+            <div>
+              <span>Escalation</span>
+              <strong>{workflowResult.escalation_required ? "Required" : "Not required"}</strong>
+            </div>
+          </div>
+
+          {workflowResult.escalation_reasons.length ? (
+            <div className="warning-banner">
+              {workflowResult.escalation_reasons.map((reason) => (
+                <div key={reason}>{reason}</div>
+              ))}
+            </div>
+          ) : null}
+
+          <div className="summary-row">
+            {Object.entries(workflowResult.risk_summary.risk_counts).map(([risk, count]) => (
+              <div key={risk}>
+                <span>{risk}</span>
+                <strong>{count}</strong>
+              </div>
+            ))}
+            <div>
+              <span>NOT DISCLOSED</span>
+              <strong>{workflowResult.risk_summary.not_disclosed_count}</strong>
+            </div>
+          </div>
+
+          <div className="result-stack">
+            {Object.entries(workflowResult.report.audit_result.audits).map(([dimension, audit]) => (
+              <WorkflowDimension audit={audit} dimension={dimension} key={dimension} />
+            ))}
+          </div>
+        </SectionPanel>
+      ) : null}
 
       {job ? (
         <SectionPanel

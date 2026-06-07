@@ -10,3 +10,7 @@ torch
 transformers
 PyMuPDF
 python-docx
+langchain
+langchain-core
+langgraph
+langchain-groq

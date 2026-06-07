@@ -66,6 +66,8 @@ POST /api/fda-audit/jobs/devices/{filename}
 GET  /api/fda-audit/jobs
 GET  /api/fda-audit/jobs/{job_id}
 POST /api/privacy-review/upload
+POST /api/workflows/fda-audit/mock
+POST /api/workflows/fda-audit/devices/{filename}
 ```
 
 ## Endpoint Meaning
@@ -170,3 +172,19 @@ Receive upload -> extract text -> run review/audit -> return structured JSON
 ```
 
 For long FDA audits, React should use the job endpoints instead of waiting for one long direct request.
+
+## LangGraph Workflow Endpoints
+
+The `langchain-workflow` branch adds experimental LangGraph endpoints for FDA audits:
+
+```text
+POST /api/workflows/fda-audit/mock
+```
+
+Runs a mock graph workflow without Groq calls. Use this to confirm orchestration, risk scoring, report generation, and escalation routing.
+
+```text
+POST /api/workflows/fda-audit/devices/{filename}
+```
+
+Runs the real graph workflow against an existing cleaned FDA device file. The response includes workflow status, overall risk, risk counts, escalation reasons, and the full audit report.

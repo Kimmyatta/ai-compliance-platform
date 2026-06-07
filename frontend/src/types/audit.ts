@@ -76,3 +76,47 @@ export type PrivacyReviewResponse = {
   filename: string;
   reviews: PrivacyReviewResult[];
 };
+
+export type WorkflowRiskSummary = {
+  overall_risk: string;
+  risk_counts: Record<string, number>;
+  not_disclosed_count: number;
+};
+
+export type WorkflowAuditDimension = {
+  status: string;
+  audit: string;
+  error: string;
+  sources: string[];
+  guidance: string;
+  principles: string[];
+  device_evidence: Array<Record<string, unknown>>;
+  determination?: string;
+};
+
+export type WorkflowAuditResult = {
+  audits: Record<string, WorkflowAuditDimension>;
+  summary: FdaAuditSummary;
+};
+
+export type WorkflowReport = {
+  workflow_id: string;
+  workflow_type: string;
+  filename: string;
+  audit_result: WorkflowAuditResult;
+  risk_summary: WorkflowRiskSummary;
+  escalation_required: boolean;
+  escalation_reasons: string[];
+};
+
+export type WorkflowRunResponse = {
+  workflow_id: string;
+  status: string;
+  workflow_type: string;
+  filename: string;
+  risk_summary: WorkflowRiskSummary;
+  escalation_required: boolean;
+  escalation_reasons: string[];
+  report: WorkflowReport;
+  error: string | null;
+};

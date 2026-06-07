@@ -44,6 +44,12 @@ button:disabled {
   opacity: 0.55;
 }
 
+.button-secondary {
+  background: #ffffff;
+  border-color: #1f5f57;
+  color: #1f5f57;
+}
+
 select,
 input[type="file"] {
   background: #ffffff;
@@ -331,6 +337,15 @@ nav {
   border-radius: 6px;
   color: #a33a32;
   margin-top: 14px;
+  padding: 12px;
+}
+
+.warning-banner {
+  background: #fff7e6;
+  border: 1px solid #f4d08f;
+  border-radius: 6px;
+  color: #7a4c00;
+  margin-bottom: 18px;
   padding: 12px;
 }
 

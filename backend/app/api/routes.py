@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from fastapi import APIRouter, BackgroundTasks, File, HTTPException, Query, UploadFile
 
 from backend.app.models.schemas import (
@@ -8,6 +10,8 @@ from backend.app.models.schemas import (
     FdaAuditResponse,
     HealthResponse,
     PrivacyReviewResponse,
+    WorkflowRunRequest,
+    WorkflowRunResponse,
 )
 from backend.app.services.fda_audit_service import (
     audit_cleaned_device,
@@ -152,3 +156,63 @@ async def run_privacy_review_upload(file: UploadFile = File(...)):
         return review_uploaded_document(filename=filename, document_text=document_text)
     except Exception as error:
         raise HTTPException(status_code=400, detail=str(error)) from error
+
+
+@router.post("/workflows/fda-audit/mock", response_model=WorkflowRunResponse)
+def run_mock_fda_audit_workflow(payload: WorkflowRunRequest):
+    from backend.app.workflows.compliance_graph import compliance_graph
+
+    workflow_id = str(uuid4())
+    result = compliance_graph.invoke(
+        {
+            "workflow_id": workflow_id,
+            "workflow_type": "fda_audit",
+            "status": "initialized",
+            "mock_mode": payload.mock_mode,
+            "filename": payload.filename,
+            "document_text": payload.document_text,
+        }
+    )
+
+    return {
+        "workflow_id": workflow_id,
+        "status": result.get("status", "unknown"),
+        "workflow_type": result.get("workflow_type", "fda_audit"),
+        "filename": result.get("filename", payload.filename),
+        "risk_summary": result.get("risk_summary", {}),
+        "escalation_required": result.get("escalation_required", False),
+        "escalation_reasons": result.get("escalation_reasons", []),
+        "report": result.get("report", {}),
+        "error": result.get("error"),
+    }
+
+@router.post("/workflows/fda-audit/devices/{filename}", response_model=WorkflowRunResponse)
+def run_real_fda_audit_workflow(filename: str):
+    from backend.app.workflows.compliance_graph import compliance_graph
+    from document_review_fda import load_device_submission
+
+    workflow_id = str(uuid4())
+    document_text = load_device_submission(filename)
+
+    result = compliance_graph.invoke(
+        {
+            "workflow_id": workflow_id,
+            "workflow_type": "fda_audit",
+            "status": "initialized",
+            "mock_mode": False,
+            "filename": filename,
+            "document_text": document_text,
+        }
+    )
+
+    return {
+        "workflow_id": workflow_id,
+        "status": result.get("status", "unknown"),
+        "workflow_type": result.get("workflow_type", "fda_audit"),
+        "filename": result.get("filename", filename),
+        "risk_summary": result.get("risk_summary", {}),
+        "escalation_required": result.get("escalation_required", False),
+        "escalation_reasons": result.get("escalation_reasons", []),
+        "report": result.get("report", {}),
+        "error": result.get("error"),
+    }

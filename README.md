@@ -71,6 +71,49 @@ Groq-generated review or audit
 React result display and downloads
 ```
 
+## LangGraph Workflow Branch
+
+The `langchain-workflow` branch adds a LangChain/LangGraph orchestration layer for the FDA AI device audit. The original Streamlit app, FastAPI audit endpoints, and React frontend remain in place. The LangGraph work adds a new workflow path so the FDA audit can be organized as separate stages instead of one monolithic review call.
+
+Current LangGraph workflow stages:
+
+- Intake: receives the selected cleaned FDA device submission.
+- Retrieval: prepares guidance and device evidence context.
+- Compliance review: runs the FDA AI audit using the existing audit engine.
+- Risk scoring: counts HIGH, MEDIUM, LOW, UNKNOWN, NOT APPLICABLE, and NOT DISCLOSED findings.
+- Report generation: assembles the workflow result.
+- Escalation: flags audits that need human review, such as audits with multiple NOT DISCLOSED findings.
+
+The React FDA audit page now has two FDA audit options:
+
+```text
+Start Device Audit
+```
+
+Runs the existing FastAPI background-job audit flow.
+
+```text
+Run LangGraph Workflow
+```
+
+Runs the new LangGraph FDA workflow endpoint and displays workflow ID, status, overall risk, escalation status, risk counts, audit dimensions, and JSON/TXT downloads.
+
+Example interpretation:
+
+```text
+MEDIUM = 8
+```
+
+means 8 audit dimensions were scored as MEDIUM risk.
+
+```text
+NOT DISCLOSED = 7
+```
+
+means 7 specific guidance principles or disclosure items did not have enough public evidence in the FDA submission. If the NOT DISCLOSED count is high enough, the workflow marks the result as requiring human review.
+
+At this stage, LangGraph is orchestrating the FDA audit workflow while still reusing the existing FDA audit engine. The next refinement is to make the retrieval node pass evidence directly into the review node so the graph is more fully separated by agent responsibility.
+
 ## Version 1.0
 
 Version 1.0 provides a working regulatory review pipeline for HIPAA, CCPA, and HITECH.
@@ -166,6 +209,8 @@ POST /api/fda-audit/jobs/devices/{filename}
 GET  /api/fda-audit/jobs
 GET  /api/fda-audit/jobs/{job_id}
 POST /api/privacy-review/upload
+POST /api/workflows/fda-audit/mock
+POST /api/workflows/fda-audit/devices/{filename}
 ```
 
 The two FDA audit POST endpoints both generate FDA audit reviews, but they support different workflows:
@@ -203,6 +248,20 @@ The POST endpoint starts an audit and returns immediately:
 The frontend can then poll the job status endpoint until the job returns `completed` or `failed`.
 
 The current job store is in memory. This is suitable for local development and React integration, but AWS production should replace it with a persistent store such as Redis, DynamoDB, RDS, or S3-backed job records.
+
+The LangGraph workflow endpoints are currently experimental and live on the `langchain-workflow` branch:
+
+```text
+POST /api/workflows/fda-audit/mock
+```
+
+Runs a mock LangGraph workflow without calling Groq. This is useful for confirming that graph orchestration, risk scoring, reporting, and escalation routing work.
+
+```text
+POST /api/workflows/fda-audit/devices/{filename}
+```
+
+Runs the real LangGraph FDA workflow against an existing cleaned device file from `data/fda_ai/devices/cleaned/`.
 
 Run the backend from the project root:
 

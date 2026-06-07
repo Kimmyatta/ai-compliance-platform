@@ -82,3 +82,20 @@ class PrivacyReviewResponse(BaseModel):
 
 class ErrorResponse(BaseModel):
     detail: str
+
+class WorkflowRunRequest(BaseModel):
+    filename: str = "mock_device.txt"
+    document_text: str = "This is a mock FDA AI medical device submission."
+    mock_mode: bool = True
+
+
+class WorkflowRunResponse(BaseModel):
+    workflow_id: str
+    status: str
+    workflow_type: str
+    filename: str
+    risk_summary: dict[str, Any] = Field(default_factory=dict)
+    escalation_required: bool = False
+    escalation_reasons: list[str] = Field(default_factory=list)
+    report: dict[str, Any] = Field(default_factory=dict)
+    error: str | None = None

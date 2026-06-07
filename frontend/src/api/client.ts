@@ -5,6 +5,7 @@ import type {
   FdaAuditJobStatusResponse,
   HealthResponse,
   PrivacyReviewResponse,
+  WorkflowRunResponse,
 } from "../types/audit";
 
 const API_BASE_URL =
@@ -76,6 +77,13 @@ export function getFdaJob(jobId: string): Promise<FdaAuditJobStatusResponse> {
 
 export function getFdaJobs(): Promise<FdaAuditJobListResponse> {
   return request<FdaAuditJobListResponse>("/api/fda-audit/jobs");
+}
+
+export function runFdaWorkflowDevice(filename: string): Promise<WorkflowRunResponse> {
+  return request<WorkflowRunResponse>(
+    `/api/workflows/fda-audit/devices/${encodeURIComponent(filename)}`,
+    { method: "POST" },
+  );
 }
 
 export function uploadPrivacyReview(file: File): Promise<PrivacyReviewResponse> {
