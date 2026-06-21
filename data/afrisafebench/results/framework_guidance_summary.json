@@ -1,0 +1,37 @@
+{
+  "framework_report_count": 15,
+  "scenario_count": 5,
+  "models": [
+    "llama-3.1-8b-instant",
+    "llama-3.3-70b-versatile",
+    "openai/gpt-oss-20b"
+  ],
+  "average_recommendations_per_report": 3.8,
+  "priority_distribution": {
+    "High": 35,
+    "Medium": 21,
+    "Low": 1
+  },
+  "most_used_framework_sources": {
+    "WHO AI_FOR_HEALTH chunk 58": 11,
+    "WHO AI_FOR_HEALTH chunk 148": 11,
+    "WHO AI_FOR_HEALTH chunk 408": 11,
+    "Continental_AI_Strategy chunk 100": 9,
+    "WHO AI_FOR_HEALTH chunk 56": 4,
+    "WHO AI_FOR_HEALTH chunk 149": 4,
+    "WHO AI_FOR_HEALTH chunk 147": 4,
+    "WHO AI_FOR_HEALTH chunk 230": 3,
+    "Continental_AI_Strategy chunk 101": 3,
+    "WHO AI_FOR_HEALTH chunk 424": 3,
+    "WHO AI_FOR_HEALTH chunk 425": 3,
+    "WHO AI_FOR_HEALTH chunk 239": 3,
+    "WHO AI_FOR_HEALTH chunk 209": 3,
+    "WHO AI_FOR_HEALTH chunk 290": 3,
+    "WHO AI_FOR_HEALTH chunk 60": 2,
+    "WHO AI_FOR_HEALTH chunk 142": 2,
+    "WHO AI_FOR_HEALTH chunk 217": 2,
+    "WHO AI_FOR_HEALTH chunk 295": 2,
+    "WHO AI_FOR_HEALTH chunk 373": 2,
+    "WHO AI_FOR_HEALTH chunk 57": 1
+  }
+}

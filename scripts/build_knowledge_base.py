@@ -13,6 +13,7 @@ from sentence_transformers import SentenceTransformer
 DATASETS = {
     "privacy": Path("data/privacy"),
     "fda_guidance": Path("data/fda_ai/guidance"),
+    "afrisafe_frameworks": Path("data/afrisafebench/frameworks"),
 }
 
 

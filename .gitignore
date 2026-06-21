@@ -5,6 +5,7 @@ __pycache__/
 *.pyc
 logs.json
 *.log
+~$*.docx
 .streamlit/secrets.toml
 .tmp/
 .tools/

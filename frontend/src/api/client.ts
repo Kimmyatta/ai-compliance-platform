@@ -1,4 +1,10 @@
 import type {
+  AiSafetyBenchmarkResponse,
+  AiSafetyEvaluationResponse,
+  AiSafetyFrameworkGuidedReportResponse,
+  AiSafetyModelsResponse,
+  AiSafetyRescoredReviewListResponse,
+  AiSafetyScenarioListResponse,
   DeviceListResponse,
   FdaAuditJobCreateResponse,
   FdaAuditJobListResponse,
@@ -35,6 +41,117 @@ export function getHealth(): Promise<HealthResponse> {
 
 export function getFdaDevices(): Promise<DeviceListResponse> {
   return request<DeviceListResponse>("/api/fda-audit/devices");
+}
+
+export function getAiSafetyScenarios(): Promise<AiSafetyScenarioListResponse> {
+  return request<AiSafetyScenarioListResponse>("/api/ai-safety/scenarios");
+}
+
+export function getAiSafetyModels(): Promise<AiSafetyModelsResponse> {
+  return request<AiSafetyModelsResponse>("/api/ai-safety/models");
+}
+
+export function getAiSafetyRescoredReviews(): Promise<AiSafetyRescoredReviewListResponse> {
+  return request<AiSafetyRescoredReviewListResponse>("/api/ai-safety/rescored-reviews");
+}
+
+export function evaluateAiSafetyScenario(
+  scenarioId: string,
+  model: string,
+): Promise<AiSafetyEvaluationResponse> {
+  const params = new URLSearchParams({ model });
+  return request<AiSafetyEvaluationResponse>(
+    `/api/ai-safety/scenarios/${encodeURIComponent(scenarioId)}/evaluate?${params}`,
+    { method: "POST" },
+  );
+}
+
+export function runAiSafetyBenchmark(models: string[] = []): Promise<AiSafetyBenchmarkResponse> {
+  return request<AiSafetyBenchmarkResponse>("/api/ai-safety/benchmark/run", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ models }),
+  });
+}
+
+export function evaluateAiSafetyText(payload: {
+  title: string;
+  country: string;
+  text: string;
+  expected_risk_categories: string[];
+  model: string;
+}): Promise<AiSafetyEvaluationResponse> {
+  return request<AiSafetyEvaluationResponse>("/api/ai-safety/evaluate", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+}
+
+export function generateAiSafetyFrameworkGuidance(
+  scenarioId: string,
+  payload: {
+    model: string;
+    detected_risks: Array<{ risk: string; severity: string; explanation: string }>;
+    missed_risks: string[];
+    k?: number;
+  },
+): Promise<AiSafetyFrameworkGuidedReportResponse> {
+  return request<AiSafetyFrameworkGuidedReportResponse>(
+    `/api/ai-safety/scenarios/${encodeURIComponent(scenarioId)}/framework-guidance`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    },
+  );
+}
+
+export function generateAiSafetyFrameworkGuidanceFromRescored(
+  scenarioId: string,
+  payload: {
+    source_model: string;
+    guidance_model?: string | null;
+    k?: number;
+  },
+): Promise<AiSafetyFrameworkGuidedReportResponse> {
+  return request<AiSafetyFrameworkGuidedReportResponse>(
+    `/api/ai-safety/scenarios/${encodeURIComponent(scenarioId)}/rescored-framework-guidance`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    },
+  );
+}
+
+export function uploadAiSafetyDocument(
+  file: File,
+  options: {
+    title?: string;
+    country?: string;
+    expectedRiskCategories?: string[];
+    model: string;
+  },
+): Promise<AiSafetyEvaluationResponse> {
+  const params = new URLSearchParams({
+    model: options.model,
+    country: options.country ?? "",
+  });
+  if (options.title) {
+    params.set("title", options.title);
+  }
+  for (const category of options.expectedRiskCategories ?? []) {
+    params.append("expected_risk_categories", category);
+  }
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  return request<AiSafetyEvaluationResponse>(`/api/ai-safety/upload?${params}`, {
+    method: "POST",
+    body: formData,
+  });
 }
 
 export function createFdaDeviceJob(

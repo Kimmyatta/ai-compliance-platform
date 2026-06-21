@@ -15,3 +15,8 @@ def privacy_index_available():
 def fda_guidance_index_available():
     index_dir = get_settings().fda_guidance_index_dir
     return path_exists(index_dir / "index.faiss") and path_exists(index_dir / "metadata.json")
+
+
+def afrisafe_frameworks_index_available():
+    index_dir = get_settings().afrisafe_frameworks_index_dir
+    return path_exists(index_dir / "index.faiss") and path_exists(index_dir / "metadata.json")

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420">
+<rect width="900" height="420" fill="#ffffff"/>
+<text x="36" y="44" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#17212b" text-anchor="start">Mean Coverage by Model</text>
+<text x="36" y="72" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#607086" text-anchor="start">AfriSafeBench benchmark: 25 scenarios x 3 models = 75 evaluations</text>
+<text x="36" y="133" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#17212b" text-anchor="start">openai/gpt-oss-20b</text>
+<rect x="260" y="105" width="520" height="42" fill="#edf2f6" rx="4"/>
+<rect x="260" y="105" width="374.4" height="42" fill="#1f766d" rx="4"/>
+<text x="646.4" y="133" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#17212b" text-anchor="start">72.00%</text>
+<text x="36" y="205" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#17212b" text-anchor="start">llama-3.1-8b-instant</text>
+<rect x="260" y="177" width="520" height="42" fill="#edf2f6" rx="4"/>
+<rect x="260" y="177" width="367.5" height="42" fill="#3d6fb6" rx="4"/>
+<text x="639.4839999999999" y="205" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#17212b" text-anchor="start">70.67%</text>
+<text x="36" y="277" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#17212b" text-anchor="start">llama-3.3-70b-versatile</text>
+<rect x="260" y="249" width="520" height="42" fill="#edf2f6" rx="4"/>
+<rect x="260" y="249" width="353.6" height="42" fill="#d59f2a" rx="4"/>
+<text x="625.6" y="277" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#17212b" text-anchor="start">68.00%</text>
+<text x="36" y="360" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#607086" text-anchor="start">Higher coverage means more expected risk categories were identified.</text>
+</svg>

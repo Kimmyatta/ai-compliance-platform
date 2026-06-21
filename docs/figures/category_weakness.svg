@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620">
+<rect width="1000" height="620" fill="#ffffff"/>
+<text x="36" y="44" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#17212b" text-anchor="start">Risk Categories with Lowest Average Coverage</text>
+<text x="36" y="72" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#607086" text-anchor="start">Average across evaluated models. Lower scores indicate harder-to-detect governance risks.</text>
+<text x="36" y="126" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#607086" text-anchor="start">Resource-Constrained Deployment</text>
+<rect x="380" y="105" width="500" height="32" fill="#edf2f6" rx="4"/>
+<rect x="380" y="105" width="138.9" height="32" fill="#c94f4f" rx="4"/>
+<text x="892" y="127" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#17212b" text-anchor="start">27.8%</text>
+<text x="36" y="176" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#607086" text-anchor="start">Vendor Dependency</text>
+<rect x="380" y="155" width="500" height="32" fill="#edf2f6" rx="4"/>
+<rect x="380" y="155" width="291.7" height="32" fill="#d59f2a" rx="4"/>
+<text x="892" y="177" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#17212b" text-anchor="start">58.3%</text>
+<text x="36" y="226" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#607086" text-anchor="start">Monitoring and Incident Reporting</text>
+<rect x="380" y="205" width="500" height="32" fill="#edf2f6" rx="4"/>
+<rect x="380" y="205" width="296.3" height="32" fill="#d59f2a" rx="4"/>
+<text x="892" y="227" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#17212b" text-anchor="start">59.3%</text>
+<text x="36" y="276" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#607086" text-anchor="start">Distribution Shift and Local</text>
+<text x="36" y="291" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#607086" text-anchor="start">Validation</text>
+<rect x="380" y="255" width="500" height="32" fill="#edf2f6" rx="4"/>
+<rect x="380" y="255" width="316.7" height="32" fill="#d59f2a" rx="4"/>
+<text x="892" y="277" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#17212b" text-anchor="start">63.3%</text>
+<text x="36" y="326" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#607086" text-anchor="start">Human Oversight</text>
+<rect x="380" y="305" width="500" height="32" fill="#edf2f6" rx="4"/>
+<rect x="380" y="305" width="363.7" height="32" fill="#1f766d" rx="4"/>
+<text x="892" y="327" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#17212b" text-anchor="start">72.7%</text>
+<text x="36" y="376" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#607086" text-anchor="start">Misinformation or Unsafe Medical</text>
+<text x="36" y="391" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#607086" text-anchor="start">Advice</text>
+<rect x="380" y="355" width="500" height="32" fill="#edf2f6" rx="4"/>
+<rect x="380" y="355" width="366.7" height="32" fill="#1f766d" rx="4"/>
+<text x="892" y="377" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#17212b" text-anchor="start">73.3%</text>
+<text x="36" y="426" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#607086" text-anchor="start">Transparency and Explainability</text>
+<rect x="380" y="405" width="500" height="32" fill="#edf2f6" rx="4"/>
+<rect x="380" y="405" width="370.4" height="32" fill="#1f766d" rx="4"/>
+<text x="892" y="427" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#17212b" text-anchor="start">74.1%</text>
+<text x="36" y="476" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#607086" text-anchor="start">Safety and Reliability</text>
+<rect x="380" y="455" width="500" height="32" fill="#edf2f6" rx="4"/>
+<rect x="380" y="455" width="416.7" height="32" fill="#1f766d" rx="4"/>
+<text x="892" y="477" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#17212b" text-anchor="start">83.3%</text>
+<text x="36" y="526" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#607086" text-anchor="start">Data Governance and Privacy</text>
+<rect x="380" y="505" width="500" height="32" fill="#edf2f6" rx="4"/>
+<rect x="380" y="505" width="433.3" height="32" fill="#1f766d" rx="4"/>
+<text x="892" y="527" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#17212b" text-anchor="start">86.7%</text>
+<text x="36" y="576" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#607086" text-anchor="start">Bias and Fairness</text>
+<rect x="380" y="555" width="500" height="32" fill="#edf2f6" rx="4"/>
+<rect x="380" y="555" width="479.2" height="32" fill="#1f766d" rx="4"/>
+<text x="892" y="577" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#17212b" text-anchor="start">95.8%</text>
+</svg>

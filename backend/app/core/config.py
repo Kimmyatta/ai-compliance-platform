@@ -23,6 +23,7 @@ class Settings:
     cors_origins: list[str]
     privacy_index_dir: Path
     fda_guidance_index_dir: Path
+    afrisafe_frameworks_index_dir: Path
 
 
 @lru_cache(maxsize=1)
@@ -35,6 +36,8 @@ def get_settings():
             [
                 "http://127.0.0.1:5173",
                 "http://localhost:5173",
+                "http://127.0.0.1:5174",
+                "http://localhost:5174",
                 "http://127.0.0.1:3000",
                 "http://localhost:3000",
             ],
@@ -44,6 +47,11 @@ def get_settings():
         / "data"
         / "fda_ai"
         / "guidance"
+        / "faiss_index",
+        afrisafe_frameworks_index_dir=PROJECT_ROOT
+        / "data"
+        / "afrisafebench"
+        / "frameworks"
         / "faiss_index",
     )
 

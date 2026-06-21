@@ -1,0 +1,95 @@
+{
+  "evaluation_count": 75,
+  "scenario_count": 25,
+  "models": [
+    "llama-3.1-8b-instant",
+    "llama-3.3-70b-versatile",
+    "openai/gpt-oss-20b"
+  ],
+  "mean_coverage_score_by_model": {
+    "llama-3.1-8b-instant": 70.67,
+    "llama-3.3-70b-versatile": 68.0,
+    "openai/gpt-oss-20b": 72.0
+  },
+  "coverage_score_by_risk_category": {
+    "llama-3.1-8b-instant": {
+      "Distribution Shift and Local Validation": 70.0,
+      "Human Oversight": 63.64,
+      "Bias and Fairness": 100.0,
+      "Transparency and Explainability": 77.78,
+      "Vendor Dependency": 50.0,
+      "Monitoring and Incident Reporting": 66.67,
+      "Resource-Constrained Deployment": 33.33,
+      "Safety and Reliability": 87.5,
+      "Data Governance and Privacy": 80.0,
+      "Misinformation or Unsafe Medical Advice": 60.0
+    },
+    "llama-3.3-70b-versatile": {
+      "Distribution Shift and Local Validation": 60.0,
+      "Human Oversight": 63.64,
+      "Bias and Fairness": 100.0,
+      "Transparency and Explainability": 66.67,
+      "Vendor Dependency": 75.0,
+      "Monitoring and Incident Reporting": 44.44,
+      "Resource-Constrained Deployment": 33.33,
+      "Safety and Reliability": 75.0,
+      "Data Governance and Privacy": 80.0,
+      "Misinformation or Unsafe Medical Advice": 100.0
+    },
+    "openai/gpt-oss-20b": {
+      "Distribution Shift and Local Validation": 60.0,
+      "Human Oversight": 90.91,
+      "Bias and Fairness": 87.5,
+      "Transparency and Explainability": 77.78,
+      "Vendor Dependency": 50.0,
+      "Monitoring and Incident Reporting": 66.67,
+      "Resource-Constrained Deployment": 16.67,
+      "Safety and Reliability": 87.5,
+      "Data Governance and Privacy": 100.0,
+      "Misinformation or Unsafe Medical Advice": 60.0
+    }
+  },
+  "coverage_score_by_country": {
+    "llama-3.1-8b-instant": {
+      "Ghana": 77.78,
+      "Kenya": 75.0,
+      "Nigeria": 66.67,
+      "South Africa": 58.34,
+      "Uganda": 66.67,
+      "Rwanda": 83.34,
+      "Tanzania": 66.66
+    },
+    "llama-3.3-70b-versatile": {
+      "Ghana": 77.78,
+      "Kenya": 66.67,
+      "Nigeria": 73.33,
+      "South Africa": 75.0,
+      "Uganda": 66.67,
+      "Rwanda": 50.0,
+      "Tanzania": 66.67
+    },
+    "openai/gpt-oss-20b": {
+      "Ghana": 88.89,
+      "Kenya": 50.0,
+      "Nigeria": 66.67,
+      "South Africa": 75.0,
+      "Uganda": 77.78,
+      "Rwanda": 83.34,
+      "Tanzania": 66.67
+    }
+  },
+  "coverage_score_by_severity": {
+    "llama-3.1-8b-instant": {
+      "High": 70.59,
+      "Medium": 70.84
+    },
+    "llama-3.3-70b-versatile": {
+      "High": 68.63,
+      "Medium": 66.67
+    },
+    "openai/gpt-oss-20b": {
+      "High": 70.59,
+      "Medium": 75.0
+    }
+  }
+}

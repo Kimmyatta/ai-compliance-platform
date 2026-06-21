@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="360" viewBox="0 0 760 360">
+<rect width="760" height="360" fill="#ffffff"/>
+<text x="36" y="44" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#17212b" text-anchor="start">Framework Guidance Recommendation Priorities</text>
+<text x="36" y="72" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#607086" text-anchor="start">Compiled from downloaded framework-guided reports.</text>
+<text x="36" y="133" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#17212b" text-anchor="start">High</text>
+<rect x="210" y="105" width="420" height="42" fill="#edf2f6" rx="4"/>
+<rect x="210" y="105" width="336.0" height="42" fill="#c94f4f" rx="4"/>
+<text x="642" y="133" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#17212b" text-anchor="start">4</text>
+<text x="36" y="203" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#17212b" text-anchor="start">Medium</text>
+<rect x="210" y="175" width="420" height="42" fill="#edf2f6" rx="4"/>
+<rect x="210" y="175" width="420.0" height="42" fill="#d59f2a" rx="4"/>
+<text x="642" y="203" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#17212b" text-anchor="start">5</text>
+<text x="36" y="273" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#17212b" text-anchor="start">Low</text>
+<rect x="210" y="245" width="420" height="42" fill="#edf2f6" rx="4"/>
+<rect x="210" y="245" width="0.0" height="42" fill="#1f766d" rx="4"/>
+<text x="642" y="273" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#17212b" text-anchor="start">0</text>
+</svg>

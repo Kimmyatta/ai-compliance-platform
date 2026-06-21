@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360">
+<rect width="1200" height="360" fill="#ffffff"/>
+<text x="36" y="44" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#17212b" text-anchor="start">AfriSafeBench Workflow</text>
+<text x="36" y="72" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#607086" text-anchor="start">Evaluation benchmark plus framework-guided governance tool.</text>
+<rect x="36" y="145" width="160" height="96" fill="#f7fafc" stroke="#d8e0ea" rx="8"/>
+<text x="50" y="177" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#17212b" text-anchor="start">Scenario</text>
+<text x="50" y="201" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#607086" text-anchor="start">African healthcare</text>
+<text x="50" y="216" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#607086" text-anchor="start">AI deployment case</text>
+<line x1="204" y1="193.0" x2="224" y2="193.0" stroke="#607086" stroke-width="2"/>
+<polygon points="224,188.0 234,193.0 224,198.0" fill="#607086"/>
+<rect x="232" y="145" width="160" height="96" fill="#f7fafc" stroke="#d8e0ea" rx="8"/>
+<text x="246" y="177" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#17212b" text-anchor="start">LLM Review</text>
+<text x="246" y="201" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#607086" text-anchor="start">Model identifies</text>
+<text x="246" y="216" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#607086" text-anchor="start">risks and severities</text>
+<line x1="400" y1="193.0" x2="420" y2="193.0" stroke="#607086" stroke-width="2"/>
+<polygon points="420,188.0 430,193.0 420,198.0" fill="#607086"/>
+<rect x="428" y="145" width="160" height="96" fill="#f7fafc" stroke="#d8e0ea" rx="8"/>
+<text x="442" y="177" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#17212b" text-anchor="start">Scoring</text>
+<text x="442" y="201" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#607086" text-anchor="start">Matched, missed,</text>
+<text x="442" y="216" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#607086" text-anchor="start">extra risks</text>
+<line x1="596" y1="193.0" x2="616" y2="193.0" stroke="#607086" stroke-width="2"/>
+<polygon points="616,188.0 626,193.0 616,198.0" fill="#607086"/>
+<rect x="624" y="145" width="160" height="96" fill="#f7fafc" stroke="#d8e0ea" rx="8"/>
+<text x="638" y="177" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#17212b" text-anchor="start">Human Audit</text>
+<text x="638" y="201" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#607086" text-anchor="start">Flags semantic</text>
+<text x="638" y="216" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#607086" text-anchor="start">rescoring changes</text>
+<line x1="792" y1="193.0" x2="812" y2="193.0" stroke="#607086" stroke-width="2"/>
+<polygon points="812,188.0 822,193.0 812,198.0" fill="#607086"/>
+<rect x="820" y="145" width="160" height="96" fill="#f7fafc" stroke="#d8e0ea" rx="8"/>
+<text x="834" y="177" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#17212b" text-anchor="start">Framework Retrieval</text>
+<text x="834" y="201" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#607086" text-anchor="start">WHO, NIST, UNESCO,</text>
+<text x="834" y="216" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#607086" text-anchor="start">OECD, AU chunks</text>
+<line x1="988" y1="193.0" x2="1008" y2="193.0" stroke="#607086" stroke-width="2"/>
+<polygon points="1008,188.0 1018,193.0 1008,198.0" fill="#607086"/>
+<rect x="1016" y="145" width="160" height="96" fill="#f7fafc" stroke="#d8e0ea" rx="8"/>
+<text x="1030" y="177" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#17212b" text-anchor="start">Recommendations</text>
+<text x="1030" y="201" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#607086" text-anchor="start">Governance actions</text>
+<text x="1030" y="216" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#607086" text-anchor="start">and checklist</text>
+</svg>

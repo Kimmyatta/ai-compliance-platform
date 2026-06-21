@@ -1,25 +1,27 @@
 import { useEffect, useState } from "react";
-import { Activity, ClipboardCheck, History, ShieldCheck } from "lucide-react";
+import { Activity, ClipboardCheck, History, ShieldCheck, Stethoscope } from "lucide-react";
 import { getHealth } from "./api/client";
+import { AiSafetyEvaluation } from "./pages/AiSafetyEvaluation";
 import { AuditHistory } from "./pages/AuditHistory";
 import { FdaAudit } from "./pages/FdaAudit";
 import { PrivacyReview } from "./pages/PrivacyReview";
 import type { HealthResponse } from "./types/audit";
 
-type AppPage = "fda" | "privacy" | "history";
+type AppPage = "ai-safety" | "fda" | "privacy" | "history";
 
 const pages: Array<{
   id: AppPage;
   label: string;
   icon: typeof ClipboardCheck;
 }> = [
+  { id: "ai-safety", label: "AI Safety Evaluation", icon: Stethoscope },
   { id: "fda", label: "FDA AI Device Audit", icon: ClipboardCheck },
   { id: "privacy", label: "Privacy Review", icon: ShieldCheck },
   { id: "history", label: "Audit History", icon: History },
 ];
 
 export default function App() {
-  const [activePage, setActivePage] = useState<AppPage>("fda");
+  const [activePage, setActivePage] = useState<AppPage>("ai-safety");
   const [health, setHealth] = useState<HealthResponse | null>(null);
   const [healthError, setHealthError] = useState("");
 
@@ -47,10 +49,10 @@ export default function App() {
     <div className="app-shell">
       <aside className="sidebar">
         <div className="brand">
-          <div className="brand-mark">AI</div>
+          <div className="brand-mark">AS</div>
           <div>
-            <strong>AI Compliance</strong>
-            <span>Regulatory audit platform</span>
+            <strong>AfriSafeBench</strong>
+            <span>AI safety evaluation tool</span>
           </div>
         </div>
         <nav>
@@ -74,7 +76,7 @@ export default function App() {
         <header className="topbar">
           <div>
             <h1>{pages.find((page) => page.id === activePage)?.label}</h1>
-            <p>FastAPI-backed workflows for FDA AI audit and privacy compliance review.</p>
+            <p>African healthcare AI deployment risk assessment and governance recommendations.</p>
           </div>
           <div className={healthError ? "api-state api-state--error" : "api-state"}>
             <Activity size={16} />
@@ -86,6 +88,10 @@ export default function App() {
         {health ? (
           <div className="index-strip">
             <div>
+              <span>AfriSafeBench Frameworks</span>
+              <strong>{health.afrisafe_frameworks_index_available ? "Available" : "Missing"}</strong>
+            </div>
+            <div>
               <span>Privacy Index</span>
               <strong>{health.privacy_index_available ? "Available" : "Missing"}</strong>
             </div>
@@ -96,6 +102,7 @@ export default function App() {
           </div>
         ) : null}
 
+        {activePage === "ai-safety" ? <AiSafetyEvaluation /> : null}
         {activePage === "fda" ? <FdaAudit /> : null}
         {activePage === "privacy" ? <PrivacyReview /> : null}
         {activePage === "history" ? <AuditHistory /> : null}

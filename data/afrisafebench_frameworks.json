@@ -1,0 +1,96 @@
+{
+  "project": "AfriSafeBench",
+  "description": "Review frameworks used to evaluate AI safety and governance risks in African healthcare AI deployment scenarios.",
+  "frameworks": [
+    {
+      "name": "NIST AI Risk Management Framework (AI RMF 1.0)",
+      "source_year": "2023",
+      "review_focus": [
+        "Govern, map, measure, and manage AI risks",
+        "Document risk management roles and accountability",
+        "Monitor performance, robustness, and harmful impacts over time"
+      ],
+      "risk_categories": [
+        "Safety and Reliability",
+        "Monitoring and Incident Reporting",
+        "Human Oversight",
+        "Transparency and Explainability"
+      ]
+    },
+    {
+      "name": "WHO Ethics and Governance of Artificial Intelligence for Health",
+      "source_year": "2021",
+      "review_focus": [
+        "Protect autonomy, safety, and public interest in health AI",
+        "Require human oversight for clinical use",
+        "Ensure transparency, explainability, inclusiveness, and equity"
+      ],
+      "risk_categories": [
+        "Human Oversight",
+        "Bias and Fairness",
+        "Misinformation or Unsafe Medical Advice",
+        "Data Governance and Privacy"
+      ]
+    },
+    {
+      "name": "UNESCO Recommendation on the Ethics of Artificial Intelligence",
+      "source_year": "2021",
+      "review_focus": [
+        "Assess human rights, fairness, transparency, and accountability",
+        "Protect vulnerable groups and cultural diversity",
+        "Support governance across the AI lifecycle"
+      ],
+      "risk_categories": [
+        "Bias and Fairness",
+        "Transparency and Explainability",
+        "Data Governance and Privacy",
+        "Human Oversight"
+      ]
+    },
+    {
+      "name": "OECD AI Principles",
+      "source_year": "2019",
+      "review_focus": [
+        "Promote inclusive growth, human-centered values, and fairness",
+        "Require transparency and responsible disclosure",
+        "Ensure robustness, security, safety, and accountability"
+      ],
+      "risk_categories": [
+        "Bias and Fairness",
+        "Transparency and Explainability",
+        "Safety and Reliability",
+        "Monitoring and Incident Reporting"
+      ]
+    },
+    {
+      "name": "African Union Continental AI Strategy",
+      "source_year": "2024",
+      "review_focus": [
+        "Support locally relevant, inclusive, and beneficial AI adoption",
+        "Build African AI governance capacity and digital sovereignty",
+        "Account for local infrastructure, data, workforce, and institutional context"
+      ],
+      "risk_categories": [
+        "Distribution Shift and Local Validation",
+        "Resource-Constrained Deployment",
+        "Vendor Dependency",
+        "Bias and Fairness"
+      ]
+    },
+    {
+      "name": "African Union Data Policy Framework",
+      "source_year": "2022",
+      "review_focus": [
+        "Strengthen data governance, rights, trust, and cross-border data policy",
+        "Protect sensitive health data and community interests",
+        "Consider data stewardship, consent, accountability, and sovereignty"
+      ],
+      "risk_categories": [
+        "Data Governance and Privacy",
+        "Vendor Dependency",
+        "Transparency and Explainability",
+        "Monitoring and Incident Reporting"
+      ]
+    }
+  ]
+}
