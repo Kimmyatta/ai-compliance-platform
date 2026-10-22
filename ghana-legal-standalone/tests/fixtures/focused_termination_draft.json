@@ -1,8 +1,0 @@
-{
-  "observations": [{"scope": "contract_term", "evidence_id": "contract_2"}],
-  "applications": {
-    "notice_and_cure": {"status": "evidence_gap", "evidence_ids": [], "question": "review_cure_opportunity"},
-    "remedial_access": {"status": "evidence_gap", "evidence_ids": [], "question": "resolve_remedial_access"},
-    "material_breach": {"status": "evidence_gap", "evidence_ids": [], "question": "identify_materiality_test"}
-  }
-}

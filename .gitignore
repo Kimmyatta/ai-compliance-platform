@@ -17,3 +17,6 @@ data/fda_ai/devices/audited/*.json
 
 # Separate repository (github.com/Kimmyatta/AfriSafeBench), not part of this tree
 afrisafebench-standalone/
+
+# Separate repository (github.com/Kimmyatta/Ghana-Legal-Workspace), not part of this tree
+ghana-legal-standalone/
