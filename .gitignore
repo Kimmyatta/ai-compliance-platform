@@ -14,3 +14,6 @@ frontend/dist/
 frontend/.env
 frontend/.vite/
 data/fda_ai/devices/audited/*.json
+
+# Separate repository (github.com/Kimmyatta/AfriSafeBench), not part of this tree
+afrisafebench-standalone/
